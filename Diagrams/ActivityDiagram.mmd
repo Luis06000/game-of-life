@@ -1,0 +1,24 @@
+%% Diagramme d'activité
+
+graph TD
+    A[Initialisation] --> B[Créer le jeu]
+    B --> C[Obtenir le fichier]
+    C --> D[Vérifier le fichier]
+
+    D -->|Données valides ?| E{Oui}
+    D -->|Non| F[Gérer l'erreur de fichier]
+
+    E --> G[Créer la grille]
+    G --> H[Initialiser les cellules]
+    H --> I[Vérifier la grille]
+
+    I -->|Grille valide ?| J{Oui}
+    I -->|Non| K[Gérer l'erreur de la grille]
+
+    J --> L[Mettre à jour les cellules]
+    L --> M[Notifier les observateurs]
+    M --> N[Afficher les résultats]
+
+    F --> O[Fin]
+    K --> O
+    N --> O
