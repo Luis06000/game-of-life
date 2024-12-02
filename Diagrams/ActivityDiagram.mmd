@@ -1,24 +1,33 @@
-%% Diagramme d'activité
-
 graph TD
-    A[Initialisation] --> B[Créer le jeu]
+    A[Créer le jeu] --> B[Choisir la méthode d'affichage]
     B --> C[Obtenir le fichier]
-    C --> D[Vérifier le fichier]
+    C --> D[Extraire les données]
+    D --> E{Données valides ?}
+    E -->|Non| F[Gérer l'erreur de fichier]
+    E -->|Oui| I[Créer la grille]
+    I --> J[Stocker les données dans la grille]
+    J --> K[Initialiser les cellules]
+    
+    K --> M{Grille valide ?}
 
-    D -->|Données valides ?| E{Oui}
-    D -->|Non| F[Gérer l'erreur de fichier]
+    M -->|Non| O[Gérer l'erreur de la grille]
+    M -->|Oui| N[Mettre à jour les cellules]
+    N --> P[Notifier les observateurs]
+    P --> Q[Choisir la sortie]
+    Q --> R{Affichage graphique ?}
+    R -->|Oui| T[Afficher en graphique]
+    R -->|Non| U[Afficher en console]
+    U --> V[Sauvegarder dans un fichier texte]
+    U --> M
 
-    E --> G[Créer la grille]
-    G --> H[Initialiser les cellules]
-    H --> I[Vérifier la grille]
+    O --> W[Fin]
+    F --> W
+    T --> M
+    N -->Y[Afficher selon le choix]
+    Y --> Z[Incrémenter itérations]
+    Z --> AA{<small>Nombre d'itérations atteint ?</small>}
+    AA -->|Oui| W
+    AA -->|Non| X
 
-    I -->|Grille valide ?| J{Oui}
-    I -->|Non| K[Gérer l'erreur de la grille]
-
-    J --> L[Mettre à jour les cellules]
-    L --> M[Notifier les observateurs]
-    M --> N[Afficher les résultats]
-
-    F --> O[Fin]
-    K --> O
-    N --> O
+    M --> commentaire[<small><i>Vérifiez que le tableau n'est pas videetqu'il différent du précédent.</i></small>]
+    
