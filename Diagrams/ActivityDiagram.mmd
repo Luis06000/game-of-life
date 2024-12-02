@@ -23,11 +23,10 @@ graph TD
     O --> W[Fin]
     F --> W
     T --> M
-    N -->Y[Afficher selon le choix]
-    Y --> Z[Incrémenter itérations]
+    N -->Z[Incrémenter itérations]
     Z --> AA{<small>Nombre d'itérations atteint ?</small>}
     AA -->|Oui| W
-    AA -->|Non| X
+    AA -->|Non| M
 
-    M --> commentaire[<small><i>Vérifiez que le tableau n'est pas videetqu'il différent du précédent.</i></small>]
+    M --> commentaire[<small><i>Vérifiez que le tableau n'est pas vide et qu'il différent du précédent.</i></small>]
     
