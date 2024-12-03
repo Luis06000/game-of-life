@@ -5,7 +5,7 @@
 Menu::Menu() : iterations(0), displayChoice(0) {}
 
 void Menu::ShowMenu() {
-    // Effacer le buffer d'entrée
+    // Effacer le buffer d'entree
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
@@ -14,9 +14,9 @@ void Menu::ShowMenu() {
     std::cout << "Entrez le chemin du fichier texte (ex: grid.txt): ";
     std::getline(std::cin, filePath);
 
-    // Demander les itérations
+    // Demander les iterations
     while (true) {
-        std::cout << "Entrez le nombre d'itérations (1-1000): ";
+        std::cout << "Entrez le nombre d'iterations (1-1000): ";
         if (std::cin >> iterations && iterations > 0 && iterations <= 1000) {
             break;
         }
@@ -29,7 +29,7 @@ void Menu::ShowMenu() {
     while (true) {
         std::cout << "Choisissez le type d'affichage:" << std::endl;
         std::cout << "1. Affichage simple" << std::endl;
-        std::cout << "2. Affichage avancé" << std::endl;
+        std::cout << "2. Affichage avance" << std::endl;
         std::cout << "Entrez votre choix (1 ou 2): ";
         if (std::cin >> displayChoice && (displayChoice == 1 || displayChoice == 2)) {
             break;
