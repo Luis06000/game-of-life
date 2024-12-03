@@ -6,8 +6,11 @@ int main() {
     Game game("grid.txt", 35);
     
     auto consoleObserver = new ConsoleObserver();
-    auto sfmlObserver = new SFMLObserver(50);  // Adjust size based on your grid
+    int desiredWindowSize = 800; // or whatever size you want
+    int gridSize = 10; // your grid size
+    int cellSize = desiredWindowSize / gridSize;
     
+    auto sfmlObserver = new SFMLObserver(cellSize);
     game.attach(consoleObserver);
     game.attach(sfmlObserver);
     
