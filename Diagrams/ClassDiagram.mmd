@@ -1,91 +1,126 @@
 classDiagram
-    class Game {
-        -File
-        -Grid
-        -NbIteration
-        +PrintData(): void
-        +GetFile(): void
-        +UpdateGrid(): void
-        +End(): void
-    }
+direction TB
 
-    class FileParser {
-        -Length
-        -Width
-        -Size
-        +GetSLength(): int
-        +GetWidth(): int
-        +GetSize(): int
-    }
-
-    class FileVerify {
-        -SizeOk: bool
-        -ValuesOk: bool
-        +GetSizeOk(): bool
-        +GetValuesOk(): bool
+    %% Core Classes
+    class Cells {
+        - bool state
+        - string position
+        + bool GetState()
+        + void SetState(bool newState)
+        + string GetPosition()
     }
 
     class Grid {
-        -Data: vector
-        +CreateGrid(data: Vector): void
-        +GetData(): Vector
+        - vector<vector<int>> data
+        + void CreateGrid(vector<vector<int>> inputData)
+        + const vector<vector<int>>& GetData()
     }
 
-    class Cells {
-        -State: bool
-        -Position: String
-        +GetState(): bool
-        +SetState(state: bool): void
-        +GetPosition(): String
+    class Game {
+        - string file
+        - Grid grid
+        - int nbIteration
+        - int delay
+        - vector<vector<int>> currentState
+        + Game(string filePath, int iterations, int delay)
+        + void PrintData()
+        + void GetFile()
+        + void UpdateGrid()
+        + void ValidateGrid()
+        + void End()
+        + void Run()
+        + int CountNeighbors(int row, int col)
     }
 
-    class GridVerify {
-        -IsEmpty: bool
-        -IsEqual: bool
-        +GetIsEmpty(): bool
-        +GetIsEqual(): bool
+    %% Observer Pattern
+    class Observer {
+        + void update(vector<vector<int>> data)
+        ~ Observer()
     }
 
     class Subject {
-        +attach(observer: Observer): void
-        +detach(observer: Observer): void
-        +notify(): void
+        + void attach(Observer* observer)
+        + void detach(Observer* observer)
+        + void notify()
+        ~ Subject()
     }
 
     class ConcreteSubject {
-        -observers: vector<Observer>
-        -data: vector<vector<int>>
-        +setData(data: vector<vector<int>>): void
-        +getData(): vector<vector<int>>
-        +attach(observer: Observer): void
-        +detach(observer: Observer): void
-        +notify(): void
-    }
-
-    class Observer {
-        +update(data: vector<vector<int>>): void
+        - vector<Observer*> observers
+        - vector<vector<int>> data
+        + void setData(vector<vector<int>> newData)
+        + vector<vector<int>> getData()
+        + void attach(Observer* observer)
+        + void detach(Observer* observer)
+        + void notify()
     }
 
     class ConsoleObserver {
-        +update(data: vector<vector<int>>): void
+        + void update(vector<vector<int>> data)
     }
 
     class SFMLObserver {
-        -cellSize: int
-        -window: RenderWindow
-        +SFMLObserver(gridSize: int, cellSize: int = 20)
-        +update(data: vector<vector<int>>): void
+        - int cellSize
+        - sf::RenderWindow window
+        - int gridWidth
+        - int gridHeight
+        + SFMLObserver(int cellSize = 20)
+        + void update(vector<vector<int>> data)
+        + void initialize(vector<vector<int>> data)
+        + sf::RenderWindow& getWindow()
+        + bool isWindowOpen()
     }
 
-    %% Relations
-    Game ..> FileParser : lit le fichier
-    FileParser ..> Grid : extrait les données
-    FileParser ..> FileVerify : vérifie la validité des données
-    Grid <|-- Cells : composent
-    Game ..> GridVerify : vérifie les données de la grille
-    Game ..> ConcreteSubject : "fournit les données" %% Dépendance
-    ConcreteSubject --|> Subject : "hérite de" %% Héritage
-    ConcreteSubject o--> Observer : "contient des observateurs" %% Agrégation
-    Observer <|-- ConsoleObserver : "implémente" %% Héritage
-    Observer <|-- SFMLObserver : "implémente" %% Héritage
-    SFMLObserver--> RenderWindow : "contient une instance" %% Composition
+    %% File Handling
+    class FileParser {
+        - int length
+        - int width
+        - vector<vector<int>> data
+        + FileParser(string filePath)
+        + int GetLength() const
+        + int GetWidth() const
+        + const vector<vector<int>>& GetData() const
+    }
+
+    class FileVerify {
+        - bool SizeOk
+        - bool ValuesOk
+        + void Verify(vector<vector<int>> data, int expectedLength, int expectedWidth)
+        + bool GetSizeOk() const
+        + bool GetValuesOk() const
+    }
+
+    %% Grid Validation
+    class GridVerify {
+        - bool isEmpty
+        - bool isEqual
+        + bool GetIsEmpty() const
+        + bool GetIsEqual() const
+    }
+
+    %% Menu System
+    class Menu {
+        - string filePath
+        - int iterations
+        - int displayChoice
+        - int delay
+        + Menu()
+        + void ShowMenu()
+        + string GetFilePath() const
+        + int GetIterations() const
+        + int GetDisplayChoice() const
+        + int GetDelay() const
+    }
+
+    %% Relationships with proper terms
+    Subject <|-- ConcreteSubject : Héritage
+    ConcreteSubject <|-- Game : Héritage
+    Observer <|-- ConsoleObserver : Héritage
+    Observer <|-- SFMLObserver : Héritage
+    ConcreteSubject --> Observer : Association Unidirectionnelle
+    FileParser --> FileVerify : Dépendance
+    Game --> FileParser : Dépendance
+    Game --> FileVerify : Dépendance
+    Game *--> Grid : Composition
+    Grid *--> Cells : composition
+    Menu --> Game : Dépendance
