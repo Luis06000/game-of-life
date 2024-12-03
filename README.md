@@ -15,7 +15,6 @@ Pour exécuter ce projet, assurez-vous d'avoir un compilateur C++ installé (com
    ```bash
    git clone https://github.com/Luis06000/game-of-life.git
    cd game-of-life
-   cd Code
    ```
 
 2. Compilez le projet :
@@ -31,11 +30,11 @@ Pour exécuter ce projet, assurez-vous d'avoir un compilateur C++ installé (com
 
 3. Exécutez le programme :
    ```bash
-   ./game.exe
+   ./Game.exe
    ```
 
 ## Utilisation
-- Créez un fichier de configuration (par exemple, `data.txt`) contenant les dimensions de la grille (longueur et largeur).
+- Créez un fichier de configuration (par exemple, `data.txt`) ou servez vous d'un fichier déjà existant dans le dossier `Grids`.
 - Lancez le programme pour voir l'évolution des cellules sur la grille.
 
 ## Auteurs
