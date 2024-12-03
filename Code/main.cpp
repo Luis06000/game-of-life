@@ -1,20 +1,26 @@
 #include "Game.h"
 #include "ConsoleObserver.h"
 #include "SFMLObserver.h"
+#include "Menu.h"
 
 int main() {
-    Game game("grid.txt", 35);
+    Menu menu;
+    menu.ShowMenu();
+
+    Game game(menu.GetFilePath(), menu.GetIterations());
     
-    auto consoleObserver = new ConsoleObserver();
-    auto sfmlObserver = new SFMLObserver(50);  // Adjust size based on your grid
+    Observer* observer = nullptr;
     
-    game.attach(consoleObserver);
-    game.attach(sfmlObserver);
+    if (menu.GetDisplayChoice() == 1) {
+        observer = new ConsoleObserver();
+    } else {
+        observer = new SFMLObserver(50);
+    }
     
+    game.attach(observer);
     game.Run();
     
-    delete consoleObserver;
-    delete sfmlObserver;
+    delete observer;
     
     return 0;
 }
