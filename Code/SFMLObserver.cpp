@@ -9,9 +9,16 @@ void SFMLObserver::initialize(const std::vector<std::vector<int>>& data) {
     gridHeight = data.size();
     gridWidth = data[0].size();
     
-    // Create window with the correct size based on the grid dimensions
+    // Taille de la fenêtre fixe
+    const int windowWidth = 800; // Largeur fixe de la fenêtre
+    const int windowHeight = 600; // Hauteur fixe de la fenêtre
+
+    // Calculer la taille de la cellule en fonction de la taille de la fenêtre
+    cellSize = std::min(windowWidth / gridWidth, windowHeight / gridHeight);
+    
+    // Créer la fenêtre avec la taille fixe
     window.create(
-        sf::VideoMode(gridWidth * cellSize, gridHeight * cellSize),
+        sf::VideoMode(windowWidth, windowHeight),
         "Game of Life",
         sf::Style::Titlebar | sf::Style::Close
     );
