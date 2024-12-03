@@ -3,31 +3,27 @@ CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Wextra -I. -IC:\SFML-2.6.2\include
 LDFLAGS = -LC:\SFML-2.6.2\lib -lsfml-graphics -lsfml-window -lsfml-system
 
-# Répertoires
-SRCDIR = .
-OBJDIR = obj
-
 # Fichiers sources
-SOURCES = $(wildcard $(SRCDIR)/*.cpp)
-HEADERS = $(wildcard $(SRCDIR)/*.h)
-OBJECTS = $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
+SOURCES = main.cpp \
+          Game.cpp \
+          FileParser.cpp \
+          FileVerify.cpp \
+          Grid.cpp \
+          Cells.cpp \
+          GridVerify.cpp \
+          ConsoleObserver.cpp \
+          SFMLObserver.cpp \
+          ConcreteSubject.cpp \
+          Menu.cpp
 
 # Nom de l'exécutable
 EXECUTABLE = game.exe
 
-# Création du répertoire obj si nécessaire
-$(shell mkdir -p $(OBJDIR))
-
-# Règles
-all: $(EXECUTABLE)
-
-$(EXECUTABLE): $(OBJECTS)
-	$(CXX) $(OBJECTS) -o $@ $(LDFLAGS)
-
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(HEADERS)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+# Règle principale
+$(EXECUTABLE): $(SOURCES)
+	$(CXX) $(SOURCES) $(CXXFLAGS) $(LDFLAGS) -o $(EXECUTABLE)
 
 clean:
-	rm -rf $(OBJDIR) $(EXECUTABLE)
+	rm -f $(EXECUTABLE)
 
 .PHONY: all clean
