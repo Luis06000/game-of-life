@@ -26,7 +26,7 @@ FileParser::FileParser(const std::string& filePath) {
         if (data.empty()) {
             width = row.size();
         } else if (row.size() != static_cast<size_t>(width)) {
-            std::cerr << "Erreur : Les tailles des lignes dans le fichier sont incohérentes.\n";
+            std::cerr << "Erreur : Les tailles des lignes dans le fichier sont incoherentes.\n";
             data.clear();
             length = 0;
             width = 0;

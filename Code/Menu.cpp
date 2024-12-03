@@ -3,20 +3,17 @@
 #include <limits>
 
 Menu::Menu() : iterations(0), displayChoice(0) {
-    std::cout << "Enter to start!\n"<<std::endl;
+    std::cout << "Pressez 'entrer' pour commencer\n"<<std::endl;
 }
 
 void Menu::ShowMenu() {
-    // Effacer le buffer d'entree
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    // Demander le fichier
     std::cout << "=== Menu du Jeu de la Vie ===" << std::endl;
     std::cout << "Entrez le chemin du fichier texte (ex: grid.txt): ";
     std::getline(std::cin, filePath);
 
-    // Demander les iterations
     while (true) {
         std::cout << "Entrez le nombre d'iterations (1-10000): ";
         if (std::cin >> iterations && iterations > 0 && iterations <= 10000) {
@@ -27,11 +24,10 @@ void Menu::ShowMenu() {
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
 
-    // Demander le type d'affichage
     while (true) {
         std::cout << "Choisissez le type d'affichage:" << std::endl;
-        std::cout << "1. Affichage simple" << std::endl;
-        std::cout << "2. Affichage avance" << std::endl;
+        std::cout << "1. Affichage console" << std::endl;
+        std::cout << "2. Affichage graphique" << std::endl;
         std::cout << "Entrez votre choix (1 ou 2): ";
         if (std::cin >> displayChoice && (displayChoice == 1 || displayChoice == 2)) {
             break;
@@ -41,7 +37,6 @@ void Menu::ShowMenu() {
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
 
-    // Demander le délai entre les itérations
     while (true) {
         std::cout << "Entrez le delai entre les iterations (en millisecondes): ";
         if (std::cin >> delay && delay >= 0) {

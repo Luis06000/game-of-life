@@ -1,21 +1,3 @@
-// #ifndef FILEVERIFY_H
-// #define FILEVERIFY_H
-
-// #include <vector>
-
-// class FileVerify {
-// private:
-//     bool sizeOk;
-//     bool valuesOk;
-
-// public:
-//     FileVerify(int length, int width, const std::vector<std::vector<int>>& data);
-//     bool GetSizeOk() const;
-//     bool GetValuesOk() const;
-// };
-
-// #endif // FILEVERIFY_H
-
 #pragma once
 
 #include <vector>
