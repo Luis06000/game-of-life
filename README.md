@@ -20,12 +20,18 @@ Pour exécuter ce projet, assurez-vous d'avoir un compilateur C++ installé (com
 
 2. Compilez le projet :
    ```bash
+   make
+   ```
+
+   OU
+
+   ```bash
    g++ -IC:\SFML-2.6.2\include -LC:\SFML-2.6.2\lib main.cpp Game.cpp FileParser.cpp FileVerify.cpp Grid.cpp Cells.cpp GridVerify.cpp ConsoleObserver.cpp SFMLObserver.cpp ConcreteSubject.cpp Menu.cpp-o game.exe -lsfml-graphics -lsfml-window -lsfml-system
    ```
 
 3. Exécutez le programme :
    ```bash
-   ./game_of_life
+   ./game.exe
    ```
 
 ## Utilisation
