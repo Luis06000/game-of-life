@@ -12,10 +12,11 @@ private:
     std::string file;
     Grid grid;
     int nbIteration;
+    int delay;
     std::vector<std::vector<int>> currentState;
 
 public:
-    Game(const std::string& filePath, int iterations);
+    Game(const std::string& filePath, int iterations, int delay);
     void PrintData();
     void GetFile();
     void UpdateGrid();

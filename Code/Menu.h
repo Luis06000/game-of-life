@@ -6,6 +6,7 @@ private:
     std::string filePath;
     int iterations;
     int displayChoice;
+    int delay;
 
 public:
     Menu();
@@ -13,4 +14,5 @@ public:
     std::string GetFilePath() const;
     int GetIterations() const;
     int GetDisplayChoice() const;
+    int GetDelay() const;
 };

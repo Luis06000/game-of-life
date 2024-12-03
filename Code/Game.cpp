@@ -3,8 +3,8 @@
 #include <thread>
 #include <chrono>
 
-Game::Game(const std::string& filePath, int iterations) 
-    : file(filePath), nbIteration(iterations) {}
+Game::Game(const std::string& filePath, int iterations, int delay) 
+    : file(filePath), nbIteration(iterations), delay(delay) {}
 
 void Game::PrintData() {
     notify();
@@ -75,7 +75,7 @@ void Game::Run() {
     PrintData();
     
     for (int i = 0; i < nbIteration; i++) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         UpdateGrid();
         PrintData();
     }

@@ -2,7 +2,9 @@
 #include <iostream>
 #include <limits>
 
-Menu::Menu() : iterations(0), displayChoice(0) {}
+Menu::Menu() : iterations(0), displayChoice(0) {
+    std::cout << "Enter to start!\n"<<std::endl;
+}
 
 void Menu::ShowMenu() {
     // Effacer le buffer d'entree
@@ -38,6 +40,17 @@ void Menu::ShowMenu() {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
+
+    // Demander le délai entre les itérations
+    while (true) {
+        std::cout << "Entrez le delai entre les iterations (en millisecondes): ";
+        if (std::cin >> delay && delay >= 0) {
+            break;
+        }
+        std::cout << "Erreur: Veuillez entrer un nombre valide." << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
 }
 
 std::string Menu::GetFilePath() const {
@@ -50,4 +63,8 @@ int Menu::GetIterations() const {
 
 int Menu::GetDisplayChoice() const {
     return displayChoice;
+}
+
+int Menu::GetDelay() const {
+    return delay;
 }

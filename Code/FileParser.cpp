@@ -7,7 +7,7 @@ FileParser::FileParser(const std::string& filePath) {
     std::ifstream file(filePath);
 
     if (!file.is_open()) {
-        std::cerr << "Error: Could not open file " << filePath << "\n";
+        std::cerr << "Erreur : Impossible d'ouvrir le fichier " << filePath << "\n";
         length = 0;
         width = 0;
         return;
@@ -26,7 +26,7 @@ FileParser::FileParser(const std::string& filePath) {
         if (data.empty()) {
             width = row.size();
         } else if (row.size() != static_cast<size_t>(width)) {
-            std::cerr << "Error: Row sizes in the file are inconsistent.\n";
+            std::cerr << "Erreur : Les tailles des lignes dans le fichier sont incohérentes.\n";
             data.clear();
             length = 0;
             width = 0;

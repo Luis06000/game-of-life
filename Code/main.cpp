@@ -7,7 +7,7 @@ int main() {
     Menu menu;
     menu.ShowMenu();
 
-    Game game(menu.GetFilePath(), menu.GetIterations());
+    Game game(menu.GetFilePath(), menu.GetIterations(), menu.GetDelay());
     
     Observer* observer = nullptr;
     
