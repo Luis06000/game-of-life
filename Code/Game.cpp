@@ -14,9 +14,10 @@ void Game::GetFile() {
     FileParser parser(file);
     FileVerify verifier;
     verifier.Verify(parser.GetData(), parser.GetLength(), parser.GetWidth());
+// essayer appeler verify par parser
 
     if (!verifier.GetSizeOk() || !verifier.GetValuesOk()) {
-        std::cerr << "Erreur : Les donnees ne sont pas valides.\n";
+        std::cerr << "Error: Invalid file data\n";
         return;
     }
 
@@ -34,8 +35,8 @@ int Game::CountNeighbors(int row, int col) {
         for (int j = -1; j <= 1; j++) {
             if (i == 0 && j == 0) continue;
             
-            int newRow = (row + i + rows) % rows;
-            int newCol = (col + j + cols) % cols;
+            int newRow = (row + i + rows) % rows;    // Wrap around edges
+            int newCol = (col + j + cols) % cols;    // Wrap around edges
             
             count += currentState[newRow][newCol];
         }
@@ -51,15 +52,10 @@ void Game::UpdateGrid() {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             int neighbors = CountNeighbors(i, j);
-            
-            if (currentState[i][j] == 1) {
-                if (neighbors < 2 || neighbors > 3) {
-                    newState[i][j] = 0;
-                }
-            } else {
-                if (neighbors == 3) {
-                    newState[i][j] = 1;
-                }
+            if (currentState[i][j] == 1 && (neighbors < 2 || neighbors > 3)) {
+                newState[i][j] = 0;
+            } else if (currentState[i][j] == 0 && neighbors == 3) {
+                newState[i][j] = 1;
             }
         }
     }
@@ -82,5 +78,5 @@ void Game::Run() {
 }
 
 void Game::End() {
-    std::cout << "La partie est terminee apres " << nbIteration << " iterations.\n";
+    std::cout << "Game finished after " << nbIteration << " iterations.\n";
 }

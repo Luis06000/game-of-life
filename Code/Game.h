@@ -17,6 +17,12 @@ private:
 
 public:
     Game(const std::string& filePath, int iterations, int delay);
+    Game(const std::vector<std::vector<int>>& initialGrid, int iterations = 1, int delay = 0)
+        : nbIteration(iterations), delay(delay) {
+        currentState = initialGrid;
+        grid.CreateGrid(initialGrid);
+        setData(currentState);
+    }
     void PrintData();
     void GetFile();
     void UpdateGrid();
@@ -24,4 +30,6 @@ public:
     void End();
     void Run();
     int CountNeighbors(int row, int col);
+    Grid& GetGrid() { return grid; }
+    const std::vector<std::vector<int>>& GetCurrentState() const { return currentState; }
 };
