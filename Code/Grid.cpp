@@ -1,6 +1,9 @@
-#include "Grid.hpp"
+#include "Grid.h"
 
-void Grid::CreateGrid(int width, int height) {
-    data.resize(height, std::vector<Cells>(width, Cells("")));
-    // Initialisation des cellules
+void Grid::CreateGrid(const std::vector<std::vector<int>>& inputData) {
+    data = inputData;
+}
+
+const std::vector<std::vector<int>>& Grid::GetData() const {
+    return data;
 }
