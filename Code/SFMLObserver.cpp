@@ -11,7 +11,7 @@ void SFMLObserver::initialize(const std::vector<std::vector<int>>& data) {
     
     // Taille de la fenêtre fixe
     const int windowWidth = 800; // Largeur fixe de la fenêtre
-    const int windowHeight = 600; // Hauteur fixe de la fenêtre
+    const int windowHeight = 800; // Hauteur fixe de la fenêtre
 
     // Calculer la taille de la cellule en fonction de la taille de la fenêtre
     cellSize = std::min(windowWidth / gridWidth, windowHeight / gridHeight);
@@ -32,6 +32,12 @@ void SFMLObserver::update(const std::vector<std::vector<int>>& data) {
 
     window.clear(sf::Color::Black);
 
+    // Vérifiez que gridWidth et gridHeight sont mis à jour
+    gridHeight = data.size();
+    gridWidth = data[0].size();
+    cellSize = std::min(800 / gridWidth, 800 / gridHeight); // Recalculer la taille de la cellule
+
+    // Dessiner uniquement les cellules qui ont une valeur
     for (size_t y = 0; y < data.size(); ++y) {
         for (size_t x = 0; x < data[y].size(); ++x) {
             if (data[y][x]) {
@@ -45,7 +51,7 @@ void SFMLObserver::update(const std::vector<std::vector<int>>& data) {
 
     window.display();
 
-    // Handle window events
+    // Gérer les événements de la fenêtre
     sf::Event event;
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {

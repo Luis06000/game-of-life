@@ -16,8 +16,8 @@ void Menu::ShowMenu() {
 
     // Demander les iterations
     while (true) {
-        std::cout << "Entrez le nombre d'iterations (1-1000): ";
-        if (std::cin >> iterations && iterations > 0 && iterations <= 1000) {
+        std::cout << "Entrez le nombre d'iterations (1-10000): ";
+        if (std::cin >> iterations && iterations > 0 && iterations <= 10000) {
             break;
         }
         std::cout << "Erreur: Veuillez entrer un nombre valide entre 1 et 1000." << std::endl;

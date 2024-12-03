@@ -75,7 +75,7 @@ void Game::Run() {
     PrintData();
     
     for (int i = 0; i < nbIteration; i++) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         UpdateGrid();
         PrintData();
     }
