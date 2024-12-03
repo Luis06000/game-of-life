@@ -1,47 +1,35 @@
 sequenceDiagram
-    participant main
-    participant Game
-    participant FileParser
-    participant FileVerify
-    participant Grid
-    participant GridVerify
-    participant Cells
-    participant ConcreteSubject
-    participant ConsoleObserver
-    participant SFMLObserver
+    participant User as Utilisateur
+    participant Menu as Menu
+    participant Game as Game
+    participant FileParser as FileParser
+    participant FileVerify as FileVerify
+    participant Observer as Observateur
+    participant Grid as Grille
 
-    %% Étape 1 : Initialisation
-    main ->> Game: create()
-    Game ->> FileParser: GetFile()
-    FileParser ->> FileVerify: verify(data)
-    FileVerify -->> FileParser: validity (SizeOk, ValuesOk)
-    FileParser -->> Game: valid data
+    %% Étape 1 : Interaction utilisateur
+    User ->> Menu: Affiche le menu
+    Menu -->> User: Saisit fichier, itérations, délai, affichage
+    Menu ->> Game: Initialise le jeu avec les paramètres
 
-    %% Étape 2 : Création de la grille
-    Game ->> Grid: CreateGrid(data)
-    Grid ->> Cells: initialize(state, position)
-    Cells -->> Grid: initialized
-    Grid -->> Game: grid created
+    %% Étape 2 : Chargement des données
+    Game ->> FileParser: Charge les données depuis le fichier
+    FileParser -->> Game: Renvoie les données de la grille
+    Game ->> FileVerify: Valide les données du fichier
+    FileVerify -->> Game: Retourne validation (OK ou erreur)
 
-    %% Étape 3 : Vérification de la grille
-    Game ->> GridVerify: verify(grid)
-    GridVerify -->> Game: status (IsEmpty, IsEqual)
+    %% Étape 3 : Initialisation de la grille
+    Game ->> Grid: Crée et initialise la grille
+    Grid -->> Game: Grille prête
+    Game ->> Observer: Attache un observateur (console ou graphique)
 
-    %% Étape 4 : Mise à jour des cellules
-    main ->> Game: UpdateGrid()
-    Game ->> Grid: updateCells()
-    loop for each Cell
-        Grid ->> Cells: checkNeighbors()
-        Cells -->> Grid: new state
+    %% Étape 4 : Exécution d'une itération
+    loop Pour chaque itération
+        Game ->> Grid: Met à jour la grille
+        Grid -->> Game: Renvoie l'état mis à jour
+        Game ->> Observer: Notifie des changements
+        Observer -->> User: Affiche la mise à jour (console ou graphique)
     end
-    Grid -->> Game: grid updated
 
-    %% Étape 5 : Notification des observateurs
-    Game ->> ConcreteSubject: setData(grid)
-    ConcreteSubject ->> ConcreteSubject: notify()
-    ConcreteSubject ->> ConsoleObserver: update(grid)
-    ConcreteSubject ->> SFMLObserver: update(grid)
-
-    %% Étape 6 : Affichage des résultats
-    ConsoleObserver -->> main: displayed in console
-    SFMLObserver -->> main: updated graphical window
+    %% Étape 5 : Fin du jeu
+    Game ->> User: Affiche "Jeu terminé"
