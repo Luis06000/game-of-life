@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "ConsoleObserver.h"
 #include "SFMLObserver.h"
+#include "FileObserver.h"
 #include "Menu.h"
 
 int main() {
@@ -9,18 +10,24 @@ int main() {
 
     Game game(menu.GetFilePath(), menu.GetIterations(), menu.GetDelay());
     
-    Observer* observer = nullptr;
+    // Create and attach the FileObserver
+    FileObserver* fileObserver = new FileObserver();
+    game.attach(fileObserver);
     
+    // Create and attach the display observer based on user choice
+    Observer* displayObserver = nullptr;
     if (menu.GetDisplayChoice() == 1) {
-        observer = new ConsoleObserver();
+        displayObserver = new ConsoleObserver();
     } else {
-        observer = new SFMLObserver(50);
+        displayObserver = new SFMLObserver(50);
     }
+    game.attach(displayObserver);
     
-    game.attach(observer);
     game.Run();
     
-    delete observer;
+    // Clean up
+    delete fileObserver;
+    delete displayObserver;
     
     return 0;
 }
