@@ -54,13 +54,10 @@ void Game::UpdateGrid() {
             int neighbors = CountNeighbors(i, j);
             
             if (currentState[i][j] == 1) {
-                // Any live cell with fewer than 2 or more than 3 live neighbors dies
-                if (neighbors < 2 || neighbors > 3) { 
-// faire changement 
+                if (neighbors < 2 || neighbors > 3) {
                     newState[i][j] = 0;
                 }
             } else {
-                // Any dead cell with exactly 3 live neighbors becomes alive
                 if (neighbors == 3) {
                     newState[i][j] = 1;
                 }
