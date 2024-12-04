@@ -35,10 +35,12 @@ int Game::CountNeighbors(int row, int col) {
         for (int j = -1; j <= 1; j++) {
             if (i == 0 && j == 0) continue;
             
-            int newRow = (row + i + rows) % rows;    // Wrap around edges
-            int newCol = (col + j + cols) % cols;    // Wrap around edges
+            int newRow = (row + i + rows) % rows;
+            int newCol = (col + j + cols) % cols;
             
-            count += currentState[newRow][newCol];
+            if (currentState[newRow][newCol] == 1 || currentState[newRow][newCol] == 3) {
+                count++;
+            }
         }
     }
     return count;
@@ -51,13 +53,17 @@ void Game::UpdateGrid() {
     
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
+            if (currentState[i][j] >= 2) {
+                continue;
+            }
+            
             int neighbors = CountNeighbors(i, j);
             
             if (currentState[i][j] == 1) {
                 if (neighbors < 2 || neighbors > 3) {
                     newState[i][j] = 0;
                 }
-            } else {
+            } else if (currentState[i][j] == 0) {
                 if (neighbors == 3) {
                     newState[i][j] = 1;
                 }

@@ -1,10 +1,10 @@
 #include "Cells.h"
 
-bool Cells::GetState() const {
+Cells::State Cells::GetState() const {
     return state;
 }
 
-void Cells::SetState(bool newState) {
+void Cells::SetState(State newState) {
     state = newState;
 }
 

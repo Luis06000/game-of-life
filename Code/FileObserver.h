@@ -9,7 +9,7 @@ class FileObserver : public Observer {
 private:
     std::ofstream file;
     int currentIteration;
-    const int MAX_ITERATIONS = 5;
+    const int MAX_ITERATIONS = 50;
     bool fileOpenSuccessful;
 
 public:
