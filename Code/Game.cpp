@@ -14,9 +14,10 @@ void Game::GetFile() {
     FileParser parser(file);
     FileVerify verifier;
     verifier.Verify(parser.GetData(), parser.GetLength(), parser.GetWidth());
+// essayer appeler verify par parser
 
     if (!verifier.GetSizeOk() || !verifier.GetValuesOk()) {
-        std::cerr << "Erreur : Les donnees ne sont pas valides.\n";
+        std::cerr << "Error: Invalid file data\n";
         return;
     }
 
@@ -34,8 +35,8 @@ int Game::CountNeighbors(int row, int col) {
         for (int j = -1; j <= 1; j++) {
             if (i == 0 && j == 0) continue;
             
-            int newRow = (row + i + rows) % rows;
-            int newCol = (col + j + cols) % cols;
+            int newRow = (row + i + rows) % rows;    // Wrap around edges
+            int newCol = (col + j + cols) % cols;    // Wrap around edges
             
             count += currentState[newRow][newCol];
         }
@@ -53,10 +54,13 @@ void Game::UpdateGrid() {
             int neighbors = CountNeighbors(i, j);
             
             if (currentState[i][j] == 1) {
-                if (neighbors < 2 || neighbors > 3) {
+                // Any live cell with fewer than 2 or more than 3 live neighbors dies
+                if (neighbors < 2 || neighbors > 3) { 
+// faire changement 
                     newState[i][j] = 0;
                 }
             } else {
+                // Any dead cell with exactly 3 live neighbors becomes alive
                 if (neighbors == 3) {
                     newState[i][j] = 1;
                 }
@@ -68,19 +72,19 @@ void Game::UpdateGrid() {
     setData(currentState);
 }
 
+
 void Game::Run() {
     GetFile();
-    PrintData();
     
     for (int i = 0; i < nbIteration; i++) {
+        PrintData();  // Affiche la grille au début de chaque itération
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         UpdateGrid();
-        PrintData();
     }
     
     End();
 }
 
 void Game::End() {
-    std::cout << "La partie est terminee apres " << nbIteration << " iterations.\n";
+    std::cout << "Game finished after " << nbIteration << " iterations.\n";
 }

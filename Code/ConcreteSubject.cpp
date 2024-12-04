@@ -2,7 +2,6 @@
 
 void ConcreteSubject::setData(const std::vector<std::vector<int>>& newData) {
     data = newData;
-    notify();
 }
 
 std::vector<std::vector<int>> ConcreteSubject::getData() const {
