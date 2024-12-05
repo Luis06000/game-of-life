@@ -10,7 +10,7 @@ int main() {
 
     Game game(menu.GetFilePath(), menu.GetIterations(), menu.GetDelay());
     
-    if (menu.GetDisplayChoice() == 1) {
+    if (menu.GetDisplayChoice() == 1 || menu.GetDisplayChoice() == 3) {
         FileObserver* fileObserver = new FileObserver(menu.GetFilePath());
         game.attach(fileObserver);
     }
@@ -25,7 +25,6 @@ int main() {
     
     game.Run();
     
-    // Nettoyage
     delete displayObserver;
     
     return 0;

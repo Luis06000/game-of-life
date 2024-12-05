@@ -36,18 +36,19 @@ public:
     }
 
     void update(const std::vector<std::vector<int>>& data) override {
-        if (!fileOpenSuccessful) return;
+        if (!fileOpenSuccessful || currentIteration >= MAX_ITERATIONS) return;
         
-        if (currentIteration < MAX_ITERATIONS && file.is_open()) {
-            file << "Iteration " << currentIteration << ":\n";
-            for (const auto& row : data) {
-                for (int cell : row) {
-                    file << (cell ? "1" : "0") << " ";
-                }
-                file << "\n";
+        file << "Iteration " << currentIteration << ":\n";
+        for (const auto& row : data) {
+            for (int cell : row) {
+                file << (cell ? "1" : "0") << " ";
             }
             file << "\n";
-            currentIteration++;
         }
+        file << "\n";
+        currentIteration++;
+        
+        // Forcer l'écriture immédiate dans le fichier
+        file.flush();
     }
 };

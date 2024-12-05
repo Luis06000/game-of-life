@@ -19,7 +19,7 @@ void Menu::ShowMenu() {
         if (std::cin >> iterations && iterations > 0 && iterations <= 10000) {
             break;
         }
-        std::cout << "Erreur: Veuillez entrer un nombre valide entre 1 et 1000." << std::endl;
+        std::cout << "Erreur: Veuillez entrer un nombre valide entre 1 et 10000." << std::endl;
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
@@ -28,11 +28,12 @@ void Menu::ShowMenu() {
         std::cout << "Choisissez le type d'affichage:" << std::endl;
         std::cout << "1. Affichage console" << std::endl;
         std::cout << "2. Affichage graphique" << std::endl;
-        std::cout << "Entrez votre choix (1 ou 2): ";
-        if (std::cin >> displayChoice && (displayChoice == 1 || displayChoice == 2)) {
+        std::cout << "3. Affichage graphique avec enregistrement" << std::endl;
+        std::cout << "Entrez votre choix (1, 2 ou 3): ";
+        if (std::cin >> displayChoice && (displayChoice == 1 || displayChoice == 2 || displayChoice == 3)) {
             break;
         }
-        std::cout << "Erreur: Veuillez entrer un choix valide (1 ou 2)." << std::endl;
+        std::cout << "Erreur: Veuillez entrer un choix valide (1, 2 ou 3)." << std::endl;
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
