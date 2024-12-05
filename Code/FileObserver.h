@@ -13,11 +13,19 @@ private:
     bool fileOpenSuccessful;
 
 public:
-    FileObserver(const std::string& filename = "game_iterations.txt") : currentIteration(0) {
-        file.open(filename);
+    FileObserver(const std::string& inputFilename) : currentIteration(0) {
+        std::string outputFilename;
+        size_t lastDot = inputFilename.find_last_of(".");
+        if (lastDot != std::string::npos) {
+            outputFilename = inputFilename.substr(0, lastDot) + "_out" + inputFilename.substr(lastDot);
+        } else {
+            outputFilename = inputFilename + "_out";
+        }
+
+        file.open(outputFilename);
         fileOpenSuccessful = file.is_open();
         if (!fileOpenSuccessful) {
-            std::cerr << "Error: Could not create or open file: " << filename << std::endl;
+            std::cerr << "Erreur : Impossible de créer ou d'ouvrir le fichier : " << outputFilename << std::endl;
         }
     }
 

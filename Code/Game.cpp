@@ -96,8 +96,7 @@ void Game::UpdateGrid() {
         currentState = newState;
         setData(currentState);
         PrintData();
-        End();
-        exit(0);
+        return;
     }
     
     twoIterationsAgoState = currentState;
@@ -113,6 +112,9 @@ void Game::Run() {
         PrintData();
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         UpdateGrid();
+        if (isStatic || isEmpty || repeat) {
+            break;
+        }
     }
     
     End();
