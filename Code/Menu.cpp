@@ -11,7 +11,7 @@ void Menu::ShowMenu() {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     std::cout << "=== Menu du Jeu de la Vie ===" << std::endl;
-    std::cout << "Entrez le chemin du fichier texte (ex: grid.txt): ";
+    std::cout << "Entrez le chemin du fichier texte (ex: ./Grids/grid.txt): ";
     std::getline(std::cin, filePath);
 
     while (true) {

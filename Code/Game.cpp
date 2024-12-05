@@ -4,7 +4,19 @@
 #include <chrono>
 
 Game::Game(const std::string& filePath, int iterations, int delay) 
-    : file(filePath), nbIteration(iterations), delay(delay) {}
+    : file(filePath), nbIteration(iterations), delay(delay), 
+      isStatic(false), isEmpty(false), repeat(false) {
+    twoIterationsAgoState = std::vector<std::vector<int>>();
+}
+
+Game::Game(const std::vector<std::vector<int>>& initialGrid, int iterations, int delay)
+    : nbIteration(iterations), delay(delay), 
+      isStatic(false), isEmpty(false), repeat(false) {
+    currentState = initialGrid;
+    twoIterationsAgoState = initialGrid;
+    grid.CreateGrid(initialGrid);
+    setData(currentState);
+}
 
 void Game::PrintData() {
     notify();
@@ -71,6 +83,24 @@ void Game::UpdateGrid() {
         }
     }
     
+    GridVerify verifier;
+    verifier.CheckStatic(newState, currentState);
+    verifier.CheckRepeat(newState, twoIterationsAgoState);
+    isStatic = verifier.GetIsStatic();
+    isEmpty = std::all_of(newState.begin(), newState.end(), [](const std::vector<int>& row) {
+        return std::all_of(row.begin(), row.end(), [](int cell) { return cell == 0; });
+    });
+    repeat = verifier.GetRepeat();
+
+    if (isStatic || isEmpty || repeat) {
+        currentState = newState;
+        setData(currentState);
+        PrintData();
+        End();
+        exit(0);
+    }
+    
+    twoIterationsAgoState = currentState;
     currentState = newState;
     setData(currentState);
 }
@@ -80,7 +110,7 @@ void Game::Run() {
     GetFile();
     
     for (int i = 0; i < nbIteration; i++) {
-        PrintData();  // Affiche la grille au début de chaque itération
+        PrintData();
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         UpdateGrid();
     }
@@ -89,5 +119,13 @@ void Game::Run() {
 }
 
 void Game::End() {
-    std::cout << "Game finished after " << nbIteration << " iterations.\n";
+    if (isStatic) {
+        std::cout << "Le jeu s'arrete, la grille est statique.\n";
+    } else if (isEmpty) {
+        std::cout << "Le jeu s'arrete, la grille est vide.\n";
+    } else if (repeat) {
+        std::cout << "La grille n'evolue plus.\n";
+    } else {
+        std::cout << "Le jeu s'arrete apres " << nbIteration << " iterations.\n";
+    }
 }

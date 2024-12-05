@@ -14,15 +14,14 @@ private:
     int nbIteration;
     int delay;
     std::vector<std::vector<int>> currentState;
+    std::vector<std::vector<int>> twoIterationsAgoState;
+    bool isStatic;
+    bool isEmpty;
+    bool repeat;
 
 public:
     Game(const std::string& filePath, int iterations, int delay);
-    Game(const std::vector<std::vector<int>>& initialGrid, int iterations = 1, int delay = 0)
-        : nbIteration(iterations), delay(delay) {
-        currentState = initialGrid;
-        grid.CreateGrid(initialGrid);
-        setData(currentState);
-    }
+    Game(const std::vector<std::vector<int>>& initialGrid, int iterations = 1, int delay = 0);
     void PrintData();
     void GetFile();
     void UpdateGrid();
