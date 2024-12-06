@@ -4,32 +4,55 @@ sequenceDiagram
     participant Game as Game
     participant FileParser as FileParser
     participant FileVerify as FileVerify
-    participant Observer as Observateur
     participant Grid as Grille
+    participant GridVerify as VérificationGrille
+    participant UnitaryTest as TestUnitaire
+    participant Observer as Observateur
 
-    %% Étape 1 : Interaction utilisateur
-    User ->> Menu: Affiche le menu
-    Menu -->> User: Saisit fichier, itérations, délai, affichage
-    Menu ->> Game: Initialise le jeu avec les paramètres
+    %% Étape 1 : Configuration utilisateur
+    User ->> Menu: ShowMenu()
+    Menu -->> User: getFilePath(), getIterations(), getDelay(), getDisplayChoice()
+    Menu ->> Game: Game(filePath, iterations, delay)
 
-    %% Étape 2 : Chargement des données
-    Game ->> FileParser: Charge les données depuis le fichier
-    FileParser -->> Game: Renvoie les données de la grille
-    Game ->> FileVerify: Valide les données du fichier
-    FileVerify -->> Game: Retourne validation (OK ou erreur)
+    %% Étape 2 : Chargement et validation des données
+    Game ->> FileParser: GetData()
+    FileParser -->> Game: Return grid data
+    Game ->> FileVerify: Verify(data, expectedLength, expectedWidth)
+    FileVerify -->> Game: GetSizeOk(), GetValuesOk()
 
-    %% Étape 3 : Initialisation de la grille
-    Game ->> Grid: Crée et initialise la grille
-    Grid -->> Game: Grille prête
-    Game ->> Observer: Attache un observateur (console ou graphique)
-
-    %% Étape 4 : Exécution d'une itération
-    loop Pour chaque itération
-        Game ->> Grid: Met à jour la grille
-        Grid -->> Game: Renvoie l'état mis à jour
-        Game ->> Observer: Notifie des changements
-        Observer -->> User: Affiche la mise à jour (console ou graphique)
+    %% Étape 3 : Initialisation et vérification de la grille
+    alt Validation réussie
+        Game ->> Grid: CreateGrid(data)
+        Grid -->> Game: Grid ready
+        Game ->> GridVerify: VerifyGrid(data)
+        GridVerify -->> Game: IsEmpty(), IsEqual()
+    else Erreur de validation
+        Game ->> User: ShowErrorMessage("Invalid file data")
     end
 
-    %% Étape 5 : Fin du jeu
-    Game ->> User: Affiche "Jeu terminé"
+    %% Étape 4 : Attachement des observateurs
+    loop Attach observers
+        Game ->> Observer: attach(ConsoleObserver)
+        Game ->> Observer: attach(SFMLObserver)
+        Game ->> Observer: attach(FileObserver)
+    end
+
+    %% Étape 5 : Tests unitaires
+    par Tests de validation
+        UnitaryTest ->> GridVerify: TestGridValidation()
+        UnitaryTest ->> FileVerify: TestFileHandling()
+        UnitaryTest ->> Game: TestGameLogic()
+    end
+
+    %% Étape 6 : Exécution du jeu
+    loop Run iterations
+        Game ->> Grid: UpdateGrid()
+        Grid -->> Game: Return updated state
+        Game ->> GridVerify: VerifyGrid(state)
+        GridVerify -->> Game: IsStatic(), IsEmpty()
+        Game ->> Observer: notify()
+        Observer -->> User: DisplayUpdate(state)
+    end
+
+    %% Étape 7 : Fin du jeu
+    Game ->> User: ShowMessage("Jeu terminé")

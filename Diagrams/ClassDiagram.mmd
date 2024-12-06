@@ -1,48 +1,15 @@
 classDiagram
-direction TB
+direction RL
 
-    %% Core Classes
-    class Cells {
-        - bool state
-        - string position
-        + bool GetState()
-        + void SetState(bool newState)
-        + string GetPosition()
-    }
-
-    class Grid {
-        - vector<vector<int>> data
-        + void CreateGrid(vector<vector<int>> inputData)
-        + const vector<vector<int>>& GetData()
-    }
-
-    class Game {
-        - string file
-        - Grid grid
-        - int nbIteration
-        - int delay
-        - vector<vector<int>> currentState
-        + Game(string filePath, int iterations, int delay)
-        + void PrintData()
-        + void GetFile()
-        + void UpdateGrid()
-        + void ValidateGrid()
-        + void End()
-        + void Run()
-        + int CountNeighbors(int row, int col)
-    }
-
-    %% Observer Pattern
-    class Observer {
-        + void update(vector<vector<int>> data)
-        ~ Observer()
-    }
-
+    %% Observer Pattern - Left Side
     class Subject {
         + void attach(Observer* observer)
         + void detach(Observer* observer)
         + void notify()
-        ~ Subject()
+    }
+
+    class Observer {
+        + void update(vector<vector<int>> data)
     }
 
     class ConcreteSubject {
@@ -71,7 +38,58 @@ direction TB
         + bool isWindowOpen()
     }
 
-    %% File Handling
+    class FileObserver {
+        - string filePath
+        + FileObserver(string filePath)
+        + void update(vector<vector<int>> data)
+    }
+
+    %% Core Classes - Center
+    class Game {
+        - string file
+        - Grid grid
+        - int nbIteration
+        - int delay
+        - vector<vector<int>> currentState
+        - vector<vector<int>> twoIterationsAgoState
+        - bool isStatic
+        - bool isEmpty
+        - bool repeat
+        + Game(string filePath, int iterations, int delay)
+        + void PrintData()
+        + void GetFile()
+        + void UpdateGrid()
+        + void ValidateGrid()
+        + void End()
+        + void Run()
+        + int CountNeighbors(int row, int col)
+    }
+
+    %% Grid Handling - Right Side
+    class Cells {
+        - bool state
+        - string position
+        + bool GetState()
+        + void SetState(bool newState)
+        + string GetPosition()
+    }
+
+    class Grid {
+        - vector<vector<int>> data
+        + void CreateGrid(vector<vector<int>> inputData)
+        + const vector<vector<int>>& GetData()
+        + void Validate(GridVerify validator)
+    }
+
+    class GridVerify {
+        - bool isEmpty
+        - bool isEqual
+        + void VerifyGrid(const vector<vector<int>>& gridData)
+        + bool GetIsEmpty() const
+        + bool GetIsEqual() const
+    }
+
+    %% File Handling - Independent
     class FileParser {
         - int length
         - int width
@@ -90,15 +108,15 @@ direction TB
         + bool GetValuesOk() const
     }
 
-    %% Grid Validation
-    class GridVerify {
-        - bool isEmpty
-        - bool isEqual
-        + bool GetIsEmpty() const
-        + bool GetIsEqual() const
+    %% Testing - Independent
+    class UnitaryTest {
+        + void RunAllTests()
+        + void TestGridValidation()
+        + void TestGameLogic()
+        + void TestFileHandling()
     }
 
-    %% Menu System
+    %% Menu System - Independent
     class Menu {
         - string filePath
         - int iterations
@@ -112,15 +130,21 @@ direction TB
         + int GetDelay() const
     }
 
-    %% Relationships with proper terms
+
+    %% Relationships
     Subject <|-- ConcreteSubject : Héritage
     ConcreteSubject <|-- Game : Héritage
     Observer <|-- ConsoleObserver : Héritage
     Observer <|-- SFMLObserver : Héritage
+    Observer <|-- FileObserver : Héritage
     ConcreteSubject --> Observer : Association Unidirectionnelle
     FileParser --> FileVerify : Dépendance
     Game --> FileParser : Dépendance
     Game --> FileVerify : Dépendance
     Game *--> Grid : Composition
-    Grid *--> Cells : composition
+    Grid *--> Cells : Composition
+    Grid --> GridVerify : Dépendance
     Menu --> Game : Dépendance
+    UnitaryTest --> GridVerify : Dépendance
+    UnitaryTest --> Game : Dépendance
+    UnitaryTest --> FileParser : Dépendance
