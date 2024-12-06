@@ -1,0 +1,58 @@
+@startuml
+
+actor User as "Utilisateur"
+actor UnitaryTest as "Test Unitaire"
+actor Observer as "Observateur"
+
+package "Interface Utilisateur" {
+    usecase UC1 as "Afficher le menu"
+    usecase UC2 as "Configurer les paramètres"
+}
+
+package "Exécution du jeu" {
+    usecase UC3 as "Lancer le jeu"
+    usecase UC4 as "Mettre à jour la grille"
+    usecase UC5 as "Notifier les observateurs"
+    usecase UC6 as "Afficher une erreur"
+}
+
+package "Observation" {
+    usecase UC7 as "Observer sur Console"
+    usecase UC8 as "Observer en Graphique"
+    usecase UC9 as "Observer dans un Fichier"
+}
+
+package "Validation" {
+    usecase UC10 as "Valider les données"
+    usecase UC11 as "Vérifier la grille"
+}
+
+package "Tests" {
+    usecase UC12 as "Tester la logique de jeu"
+    usecase UC13 as "Tester la validation de la grille"
+    usecase UC14 as "Tester la gestion des fichiers"
+}
+
+User --> UC1
+User --> UC2
+User --> UC3
+
+UC3 --> UC4 : <<include>>
+UC4 --> UC5 : <<include>>
+UC4 --> UC6 : <<extend>>
+UC5 --> UC7
+UC5 --> UC8
+UC5 --> UC9
+
+UC3 --> UC10 : <<include>>
+UC10 --> UC11 : <<include>>
+UC10 --> UC6 : <<extend>>
+
+UnitaryTest --> UC12
+UnitaryTest --> UC13
+UnitaryTest --> UC14
+
+Observer --> UC7
+Observer --> UC8
+Observer --> UC9
+@enduml
