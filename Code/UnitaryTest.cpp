@@ -18,7 +18,7 @@ public:
             {0, 0, 1, 0},
             {0, 0, 0, 0}
         };
-        std::cout << "etat initial cree" << std::endl;
+        std::cout << "Etat initial cree" << std::endl;
 
         std::vector<std::vector<int>> expectedState = {
             {0, 0, 0, 0},
@@ -26,7 +26,7 @@ public:
             {0, 0, 0, 0},
             {0, 0, 0, 0}
         };
-        std::cout << "etat attendu cree" << std::endl;
+        std::cout << "Etat attendu cree" << std::endl;
 
         std::cout << "Creation de l'instance Game..." << std::endl;
         Game game(initialState);
@@ -44,9 +44,9 @@ public:
             std::cout << "Test du blinker reussi!" << std::endl;
         } else {
             std::cout << "Test du blinker echoue!" << std::endl;
-            std::cout << "etat obtenu:" << std::endl;
+            std::cout << "Etat obtenu:" << std::endl;
             printGrid(resultState);
-            std::cout << "etat attendu:" << std::endl;
+            std::cout << "Etat attendu:" << std::endl;
             printGrid(expectedState);
         }
 
@@ -56,9 +56,11 @@ public:
 private:
     static bool compareGrids(const std::vector<std::vector<int>>& grid1, 
                            const std::vector<std::vector<int>>& grid2) {
-        if (grid1.size() != grid2.size()) return false;
-        if (grid1.empty() || grid2.empty()) return false;
-        if (grid1[0].size() != grid2[0].size()) return false;
+        if (grid1.empty() || grid2.empty() || 
+            grid1.size() != grid2.size() || 
+            grid1[0].size() != grid2[0].size()) {
+            return false;
+        }
 
         for (size_t i = 0; i < grid1.size(); i++) {
             for (size_t j = 0; j < grid1[0].size(); j++) {
